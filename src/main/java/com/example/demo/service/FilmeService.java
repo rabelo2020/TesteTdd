@@ -5,8 +5,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.FilmeDto;
 import com.example.demo.dto.FilmeDtoNameEmail;
 import com.example.demo.model.Filme;
 import com.example.demo.repository.FilmeRepository;
@@ -66,6 +69,23 @@ public class FilmeService {
 
 		return listNames.stream().map(x -> new FilmeDtoNameEmail(x)).collect(Collectors.toList());
 
+	}
+
+	public Page<Filme> buscarFilmePages(Pageable page) {
+		
+		return filmeRepository.findAll(page);
+		
+  //return pageFilmes.stream().map(x -> new FilmeDto(x)).collect(null)
+	}
+
+	public Page<Filme> buscarSalary(Double minSalary, Double maxSalary, Pageable page) {
+		
+		return filmeRepository.buscarFilmePages(minSalary, maxSalary, page);
+	}
+
+	public Page<Filme> buscarName(String name, Pageable page) {
+		
+		return filmeRepository.findByNameContainingIgnoreCase(name, page);
 	}
 
 }
